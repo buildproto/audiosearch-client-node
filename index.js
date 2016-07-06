@@ -1,7 +1,7 @@
 var Promise = require('promise');
 var EventEmitter = require('events').EventEmitter;
 var request = require('request');
-var version = '1.0.2';
+var version = '1.0.3';
 
 var Audiosearch = function (oauthKey, oauthSecret, oauthHost) {
   var self = this;
@@ -64,9 +64,9 @@ Audiosearch.prototype.get = function (url, params) {
         return self.get(url, params).then(resolve);
       });
     } else {
-
       request(options, function (err, res, body) {
         if (err || res.statusCode !== 200) {
+          console.error("rejected request:", res.request.uri, "body", res.body);
           return reject(err);
         }
         resolve(JSON.parse(body));
@@ -76,11 +76,11 @@ Audiosearch.prototype.get = function (url, params) {
 };
 
 Audiosearch.prototype.searchEpisodes = function (queryString, params) {
-  return this.get('/search/episodes/'+encodeURI(queryString), params);
+  return this.get('/search/episodes/'+encodeURIComponent(queryString), params);
 };
 
 Audiosearch.prototype.searchPeople = function (queryString, params) {
-  return this.get('/search/people/'+encodeURI(queryString), params);
+  return this.get('/search/people/'+encodeURIComponent(queryString), params);
 };
 
 Audiosearch.prototype.getShow = function (showId) {
