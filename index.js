@@ -66,7 +66,7 @@ Audiosearch.prototype.get = function (url, params) {
     } else {
       request(options, function (err, res, body) {
         if (err || res.statusCode !== 200) {
-          console.error("rejected request:", res.request.uri, "body", res.body);
+          if (res) console.error("rejected request:", res.request.uri, "body", res.body);
           return reject(err);
         }
         resolve(JSON.parse(body));
